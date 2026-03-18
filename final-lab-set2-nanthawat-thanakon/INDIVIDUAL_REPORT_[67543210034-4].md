@@ -53,6 +53,62 @@
 
 ---
 
+## สถาปัตยกรรม Set 2
+
+### Local (Docker Compose)
+
+Browser / Postman  
+│  
+▼  
+┌───────────────────────────────────────────┐  
+│ Docker Compose │  
+│ │  
+│ 🔑 Auth Svc :3001 │  
+│ • POST /register │  
+│ • POST /login │  
+│ • GET /me │  
+│ • logActivity() → Activity Svc │  
+│ │  
+│ 📋 Task Svc :3002 │  
+│ • CRUD Tasks │  
+│ • JWT Guard │  
+│ • logActivity() → Activity Svc │  
+│ │  
+│ 📅 Activity Svc :3003 │  
+│ • POST /internal (รับ event) │  
+│ • GET /me (JWT) │  
+│ • GET /all (admin) │  
+│ │  
+└───────────────────────────────────────────┘  
+
+- แยก database ต่อ service: auth-db, task-db, activity-db  
+- JWT_SECRET ใช้ร่วมกันทุก service  
+
+### Cloud (Railway)
+
+Browser / Postman  
+│ HTTPS (Railway จัดการให้)  
+▼  
+┌─────────────────────────────────────────┐  
+│ Railway Project │  
+│ │  
+│ Auth Service Task Service Activity Service │  
+│ https://auth-xxx  
+ https://task-xxx  
+ https://activity-xxx │  
+│ │ │ ▲ │  
+│ └─────────────┴─────────────┘ │  
+│ POST /internal │  
+│ │  
+│ auth-db task-db activity-db │  
+│ [PostgreSQL] [PostgreSQL] [PostgreSQL] │  
+└─────────────────────────────────────────┘  
+
+- Activity events: USER_REGISTERED, USER_LOGIN, TASK_CREATED, TASK_STATUS_CHANGED, TASK_DELETED  
+- Fire-and-forget ensures primary services work even if Activity Service down  
+
+---
+
 ## Phase 1: ปรับ Codebase ให้พร้อม Deploy
 **งานหลัก:**  
 - เพิ่ม Register API ใน Auth Service  
