@@ -191,7 +191,7 @@ window.APP_CONFIG = {
 
 ```bash
 # 1. Clone repo
-git clone https://github.com/beampond/final-lab-set2.git
+git clone git@github.com:Nanthawat67/FinalLabSet-2.git
 cd final-lab-set2
 
 # 2. สร้าง .env
